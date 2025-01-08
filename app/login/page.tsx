@@ -25,14 +25,15 @@ const Login = () => {
     e.preventDefault();
     console.log(formData);
     const validFormData = LoginSchema.safeParse(formData);
-    toast.success("login success")
-    
+
     if(validFormData.success){
       console.log("valid login form data.")
       const options = {method:"POST",body:JSON.stringify(validFormData.data)};
       const res = await fetch("/api/login",options);
       const resdata = await res.json();
       console.log(resdata);
+    }else{
+      console.log(validFormData.error)
       
     }
 
