@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
 import { Toaster } from "react-hot-toast";
+import TopNavigation from "@/components/Navigation/top-navigation";
+import { Sarabun } from "next/font/google";
+import { UserProvider } from "./context/UserContext";
+
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,6 +17,13 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+const sarabun = Sarabun({
+  weight: '400',
+  subsets: ['thai', 'latin'],
+  display: 'swap',
+  variable: "--font-sarabun",
+})
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,17 +36,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} >
-        <Navbar />
-        <div className="mas-w-screen-xl mx-auto px-5 mt-6">
-          {children}
-        </div>
-        <Toaster
-          position="bottom-right"
-          reverseOrder={false}
-        />
-      </body>
-    </html>
+    <>
+        <html lang="en">
+          {/* <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} > */}
+          <UserProvider>
+          <body className={`${sarabun.variable} ${geistSans.variable} ${geistMono.variable} antialiased`} >
+            <TopNavigation />
+            <div className="max-w-screen-xl mx-auto mt-6 px-5 sm:px-0">
+              {children}
+            </div>
+            <Toaster
+              position="bottom-right"
+              reverseOrder={false}
+            />
+          </body>
+          </UserProvider>
+        </html>
+    </>
   );
 }

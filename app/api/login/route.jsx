@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import {NextResponse} from "next/server";
+
 // export async function POST() {
 //     return NextResponse.json({
 //         message: "Post request for login"
