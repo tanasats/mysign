@@ -2,22 +2,25 @@ import { NextResponse, NextRequest } from 'next/server'
 import jwt from "jsonwebtoken"
 import { getToken } from './app/actions/tokenController';
 import { getSession } from './lib/session';
-const JWT_SECRET = "tanasat-secret-key"
+
+
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
-    let role = "";
-    //console.log("middleware()")
+
+    console.log("middleware()")
     let cookieToken = request.cookies.get('accessToken');
     //console.log("accessToken:", cookieToken);
-    if (cookieToken === undefined) return NextResponse.redirect(new URL("/login", request.url));
+    if (cookieToken === undefined) return NextResponse.redirect(new URL("/signin", request.url));
     //return NextResponse.redirect(new URL('/login', request.url))
     //  return NextResponse.next()
 
+
     const userSession = await getSession();
     //console.log("get session", userSession);
-    if(userSession===null) return NextResponse.redirect(new URL("/login", request.url));
+    if(userSession===null) return NextResponse.redirect(new URL("/signin", request.url));
     
+
     // Check the role and redirect based on the role
     console.log("userrole:", userSession.usertype);
     switch (userSession.usertype) {
@@ -33,6 +36,8 @@ export async function middleware(request: NextRequest) {
         //         return NextResponse.redirect(new URL("/student", request.url));
         //     }
         //     break;
+             
+
         case "RECEPTIONIST":
             if (!request.nextUrl.pathname.startsWith("/profile")) {
                 return NextResponse.redirect(new URL("/profile", request.url));
@@ -63,15 +68,12 @@ export async function middleware(request: NextRequest) {
         //default:
         //  return NextResponse.redirect(new URL("/login", request.url));
     }
-
-
-
     //console.log("----out from middleware---->")
 }
 
 export const config = {
     matcher: [
         // Match all routes except the ones that start with /login and api and the static folder
-        "/((?!api|_next/static|_next/image|favicon.ico|login).*)",
+        "/((?!api|_next/static|_next/image|favicon.ico|signin).*)",
     ],
 };

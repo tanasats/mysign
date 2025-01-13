@@ -1,12 +1,14 @@
 "use client"
 
 import { useFormState } from "react-dom"
-import { registerUserAction } from "@/app/actions/auth-action"
-
+//import { registerUserAction } from "@/app/actions/auth-action"
+  import { registerUserAction } from "@/app/actions/auth-action"
+  
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
-import ZodErrors from "./ZodErrors"
+import {ZodErrors} from "../custom/ZodErrors"
+
 
 const INITIAl_STATE = {
     data: null,

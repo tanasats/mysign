@@ -24,7 +24,7 @@ const Login = () => {
   const toggleShow = () => { setIsShowPassword(!isShowPassword) }
 
   const [formData, setFormData] = useState({
-    email: '',
+    username: '',
     password: '',
   })
 
@@ -79,14 +79,14 @@ const Login = () => {
 
       // form is valid
       setErrors([]);
-      const username = formData.email;
+      const username = formData.username;
       const password = formData.password;
       const res = await login(username, password);
       console.log("api login=",res);
       if (res.accessToken) {
         setToken(res.accessToken);
         await setSession(res);
-        setFormData({ email: '', password: '' })
+        setFormData({ username: '', password: '' })
         setUserID(res.fullname)
         toast.success("Login Success")
         router.push("/")
@@ -164,18 +164,18 @@ const handleSignout = async () =>{
             <h1 className='text-2xl'>Login</h1>
           </div>
           <div className="mb-5">
-            <Label>email</Label>
+            <Label>username</Label>
             <Input
-              name='email'
-              value={formData.email}
+              name='username'
+              value={formData.username}
               onChange={handleChangeData}
               type='text'
-              placeholder='email'
+              placeholder='username'
               className='bg-white'
               autoComplete="off"
 
             />
-            <span className='text-xs text-red-500 italic'>{errors.find((error) => error.for=="email")?.message}</span>
+            <span className='text-xs text-red-500 italic'>{errors.find((error) => error.for=="username")?.message}</span>
           </div>
           <div className="mb-5">
             <Label>Password</Label>

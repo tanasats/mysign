@@ -8,20 +8,16 @@ import { useState } from 'react'
 import { SignupSchema } from '@/lib/zodSchema'
 import toast from 'react-hot-toast'
 
+
 const INITIAL_FORM = {
-  name: '',
+  fullname: '',
+  username: '',
   email: '',
   password: ''
 }
 
 const Signup = () => {
-  // const [formData, setFormData] = useState({
-  //   name: '',
-  //   email: '',
-  //   password: ''
-  // })
   const [formData, setFormData] = useState(INITIAL_FORM)
-
   const [formError, setFormErrors] = useState<any[]>([]);
 
   const handleChangeData = (e: React.FormEvent<HTMLInputElement>) => {
@@ -35,22 +31,22 @@ const Signup = () => {
     e.preventDefault();
     console.log("Submit data:", formData);
 
-    const validFormData = SignupSchema.safeParse(formData);
-    console.log("Zod schema safePase:", validFormData);
+    const parseSignup = SignupSchema.safeParse(formData);
+    console.log("Zod schema safePase:", parseSignup);
 
     // Extract error message
-    if (!validFormData.success) {
-      //console.log("invalid form error:",validFormData.error);
-      const { errors: zerr } = validFormData.error;
-      const result = zerr.map(e => ({ "for": e.path[0], "message": e.message }))
-      console.log("error result:", result);
-      setFormErrors(result);
+    if (!parseSignup.success) {
+      //console.log("invalid form error:",parseSignup.error);
+      const { errors: zerr } = parseSignup.error;
+      const fielderr = zerr.map(e => ({ "for": e.path[0], "message": e.message }))
+      console.log("error result:", fielderr);
+      setFormErrors(fielderr);
       //throw err;  //:>throw err to catch(error){}
       return; //:> break out try{} to do final{}
 
 
       // let errArr: any[] = [];
-      // const { errors: err } = validFormData.error;
+      // const { errors: err } = parseSignup.error;
       // for (var i = 0; i < err.length; i++) {
       //   errArr.push({ for: err[i].path[0], message: err[i].message });
       // }
@@ -60,22 +56,26 @@ const Signup = () => {
     // form is valid-----------------------
     console.log("valid form data")
     setFormErrors([]);
-    const options = { method: "POST", body: JSON.stringify(formData) }
-    const res = await fetch('/api/signup', options);
-    const resdata = await res.json();
-    console.log(resdata)
+    try {
+      const options = { method: "POST", body: JSON.stringify(formData) }
+      const res = await fetch('/api/signup', options);
+      const resdata = await res.json();
+      console.log(resdata)
 
-    if (resdata.status === "success") {
-      console.log("Signup Success!!")
-      //setFormData({ name: '', email: '', password: '' })
-      setFormData(INITIAL_FORM);
-      toast.success("Signup Success");
-    } else {
-      toast.error("Signup Error!!");
+      if (resdata.affectedRows) {
+        console.log("Signup Success!!")
+        setFormData(INITIAL_FORM);
+        toast.success("Signup Success");
+      } else {
+        const message = "Error! " + resdata.message;
+        toast.error(message);
+      }
+    } catch (err) {
+      console.log("try-catch error: ", err)
     }
 
   }
-
+ 
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -86,13 +86,24 @@ const Signup = () => {
           <div className="mb-5">
             <Label>FullName</Label>
             <Input
-              name='name'
-              value={formData.name}
+              name='fullname'
+              value={formData.fullname}
               onChange={handleChangeData}
               type='text'
               placeholder='fullname'
               className='bg-white' />
-            <span className='text-xs text-red-500 italic'>{formError.find((e) => e.for == "name")?.message}</span>
+            <span className='text-xs text-red-500 italic'>{formError.find((e) => e.for == "fullname")?.message}</span>
+          </div>
+          <div className="mb-5">
+            <Label>Username</Label>
+            <Input
+              name='username'
+              value={formData.username}
+              onChange={handleChangeData}
+              type='text'
+              placeholder='username'
+              className='bg-white' />
+            <span className='text-xs text-red-500 italic'>{formError.find((e) => e.for == "username")?.message}</span>
           </div>
           <div className="mb-5">
             <Label>Email</Label>

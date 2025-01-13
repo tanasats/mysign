@@ -1,6 +1,6 @@
 import { signup } from '@/app/actions/auth' 
  
-export function SignupForm() {
+export function xxxSignupForm() {
   return (
     <form action={signup}>
       <div>

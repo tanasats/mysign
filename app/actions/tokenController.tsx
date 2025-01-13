@@ -4,10 +4,16 @@ import jwt, { JsonWebTokenError, NotBeforeError, TokenExpiredError } from "jsonw
 import { encrypt,decrypt } from '@/lib/encrypt';
 
 const JWT_SECRET = 'tanasat-secret-key';
-
+const config = {
+  maxAge: 60 * 60 * 24 * 7, // 1 week
+  path: "/",
+  domain: process.env.HOST ?? "localhost",
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+};
 export const setToken = async (token:string) => {
     const cookieStore = await cookies();
-    cookieStore.set('accessToken',token);
+    cookieStore.set('accessToken',token,config);
 }
 export const getToken = async () => {
     const cookieStore = await cookies();
