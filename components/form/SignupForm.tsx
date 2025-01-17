@@ -16,7 +16,7 @@ const INITIAl_STATE = {
     message: null,
 }
 
-const SignupForm = () => {
+const SignupForm1 = () => {
     const [formState,formAction] = useFormState(registerUserAction,INITIAl_STATE);
     console.log(formState,"client");
 
@@ -63,4 +63,4 @@ const SignupForm = () => {
   )
 }
 
-export default SignupForm
+export default SignupForm1

@@ -5,6 +5,9 @@ import { Toaster } from "react-hot-toast";
 import TopNavigation from "@/components/Navigation/top-navigation";
 import { Sarabun } from "next/font/google";
 import { UserProvider } from "./context/UserContext";
+import { SessionProvider } from "./context/SessionContext";
+import { TestProvider } from "./context/TestContext";
+
 
 
 
@@ -37,21 +40,27 @@ export default function RootLayout({
 }>) {
   return (
     <>
-        <html lang="en">
-          {/* <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} > */}
+      <html lang="en">
+        {/* <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} > */}
+        <SessionProvider>
           <UserProvider>
-          <body className={`${sarabun.variable} ${geistSans.variable} ${geistMono.variable} antialiased`} >
-            <TopNavigation />
-            <div className="max-w-screen-xl mx-auto mt-6 px-5 sm:px-0">
-              {children}
-            </div>
-            <Toaster
-              position="bottom-right"
-              reverseOrder={false}
-            />
-          </body>
+            <TestProvider>
+
+            <body className={`${sarabun.variable} ${geistSans.variable} ${geistMono.variable} antialiased`} >
+              <TopNavigation />
+              <div className="max-w-screen-xl mx-auto mt-6 px-5 sm:px-0">
+                {children}
+              </div>
+              <Toaster
+                position="bottom-right"
+                reverseOrder={false}
+              />
+            </body>
+            
+            </TestProvider>
           </UserProvider>
-        </html>
+        </SessionProvider>
+      </html>
     </>
   );
 }

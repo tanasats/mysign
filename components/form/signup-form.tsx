@@ -24,7 +24,7 @@ const INITIAL_STATE = {
   data: null,
 };
 
-export function SignupForm() {
+export function SignUpForm() {
   const [formState, formAction] = useActionState(registerUserAction, INITIAL_STATE);
 
   console.log("## will render on client ##");

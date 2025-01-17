@@ -6,9 +6,11 @@ import jwt from 'jsonwebtoken';
 import { getSession } from '@/lib/session';
 import UserCard from '@/components/card/userinfo';
 import { getToken, verifyToken } from '../actions/tokenController';
+import { useSession } from '../context/SessionContext';
 
 
 const Profile = () => {
+      const { currentuser,setCurrentUser,getsession,logout} = useSession();
 
   //const cookieStore = cookies();
   //const sessiondata = cookieStore.get()
@@ -34,9 +36,9 @@ const Profile = () => {
     getToken().then((data) =>{
       console.log("token decoded: ",data);
       //console.log("username",data.username)
-      const expDate = new Date(data.iat *1000);
-      console.log(expDate.toLocaleDateString('th-TH'))
-      console.log(expDate.toLocaleTimeString('th-TH'))
+      // const expDate = new Date(data.iat *1000);
+      // console.log(expDate.toLocaleDateString('th-TH'))
+      // console.log(expDate.toLocaleTimeString('th-TH'))
     })
     verifyToken().then((data)=>{
       console.log("verify token: ",data);
@@ -52,7 +54,11 @@ const Profile = () => {
           />
         </div>
         <div className='flex-1 px-5'>
-          content
+          Session data
+          <div>login status: {currentuser?.isLogin?'yes':'no'}</div>
+          <div>fullname: {currentuser?.fullname}</div>
+          <div>username: {currentuser?.username}</div>
+          <div>email: {currentuser?.email}</div>
         </div>
       </div>
 

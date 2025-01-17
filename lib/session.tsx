@@ -23,7 +23,9 @@ export type Session = {
 export const getSession = async () => {
   const cookieStore = await cookies();
   const cookieSession = cookieStore.get('session');
+  console.log("cookieSession=",cookieSession)
   if (cookieSession?.value) {
+    console.log("cookie->session:",JSON.parse(cookieSession.value))
     //--- decrypt cookie ---
     //const decrypted = decrypt(cookieSession?.value);
     //return JSON.parse(decrypted) as Session;

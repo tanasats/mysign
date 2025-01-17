@@ -5,9 +5,11 @@ import { NavLinkItem, MobileNavbarWrapper } from "@/components/Navigation";
 import { LogIn, LogOutIcon } from "lucide-react";
 
 import React, { useEffect, useState } from 'react'
-import { getSession, removeSession } from "@/lib/session";
-import { useUserContext } from "@/app/context/UserContext";
+//import { getSession, removeSession } from "@/lib/session";
+//import { useUserContext } from "@/app/context/UserContext";
 import { redirect } from "next/navigation";
+//import { useTestContext } from "@/app/context/TestContext";
+import { useSession } from "@/app/context/SessionContext";
 
 const navItems = [
     {
@@ -39,34 +41,52 @@ const navItems = [
 
 
 const TopNavigation = () => {
-    const { userID, setUserID} = useUserContext();
+    //const { userID, setUserID} = useUserContext();
+    //const { data, setData} = useTestContext();
+    const { currentuser,setCurrentUser,getsession,logout} = useSession();
+
     //const [ userdata, setUserdata] = useState({});
     const [isAuthorized,setIsAuthorized] = useState(false)
     useEffect(() => {
-        getSession().then((session) => {
-            if (session) {
-                const data = {
-                    fullname: session.fullname,
-                    username: session.username,
-                    usertype: session.usertype,
-                    usermail: session.mail,
-                };
-                if(data.username) setIsAuthorized(true);
-                console.log("uerdata:",data)
-                setUserID(data.fullname);
-            }
-        });
+        getsession(); //<--- useSession();
+        // getSession().then((session) => {
+        //     if (session) {
+        //         const data = {
+        //             fullname: session.fullname,
+        //             username: session.username,
+        //             usertype: session.usertype,
+        //             usermail: session.mail,
+        //         };
+        //         if(data.username) setIsAuthorized(true);
+        //         console.log("uerdata:",data)
+        //         setUserID(data.fullname);
+        //         // setCurrentUser({
+        //         //     isLogin:true,
+        //         //     username:"data.username",
+        //         //     usertype:"xxx",
+        //         //     fullname:data.fullname,
+        //         //     emai:"email---"})
+        //         setCurrentUser({
+        //             isLogin: true,
+        //             username: data.username,
+        //             fullname: data.fullname,
+        //             email: data.usermail,
+        //         })
+        //     }
+        //     setData({fullname:'hi!tanasat'})
+        // });
         
     }, [])
 
 
 const handleSignout = () => {
-    removeSession().then(() => {
-        setUserID('')
-        console.log("signout success");
-        redirect("/login");
-    })
-}
+    // removeSession().then(() => {
+    //     setUserID('')
+    //     console.log("signout success");
+    //     redirect("/login");
+    // })
+    logout();
+} 
 
     return (
         <div  className="max-w-screen-xl mx-auto px-5 sm:px-0">
@@ -78,7 +98,7 @@ const handleSignout = () => {
                 </span>
             </Link>
             <div className="flex items-center gap-10">
-                <nav className="hidden items-center gap-10 md:flex justify-end">
+                <nav  className="hidden items-center gap-10 md:flex justify-end">
                     {navItems.map((navItem) => (
                         <NavLinkItem
                             href={navItem.href}
@@ -89,20 +109,15 @@ const handleSignout = () => {
                         </NavLinkItem>
                     ))}
                 </nav>
+  
                 <div className="hidden items-center gap-2 md:flex">
-                    <div className="text-sm text-muted-foreground">{userID}</div>
-                    {/* <Button size="lg" asChild className="mt-2 w-full">
-                        <Link href="/login" className="cursor-pointer">
-                            Login
-                        </Link>
-                    </Button> */}
-
-                    {userID ? (
+                    <div className="text-sm text-muted-foreground">{currentuser?.fullname}</div>
+                    {currentuser?.isLogin ? (
                         <span onClick={handleSignout} className="cursor-pointer">
                             <LogOutIcon size={20} />
                         </span>
                     ) : (
-                        <Link href="/login" className="cursor-pointer"><LogIn size={20}/></Link>
+                        <Link href="/signin" className="cursor-pointer"><LogIn size={20}/></Link>
                     )
                     }
                     
@@ -121,7 +136,7 @@ const handleSignout = () => {
                             </NavLinkItem>
                         ))}
                         <Button size="lg" asChild className="mt-2 w-full">
-                            <Link href="/login" className="cursor-pointer">
+                            <Link href="/signin" className="cursor-pointer">
                                 <LogIn />
                             </Link>
                         </Button>

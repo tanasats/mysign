@@ -8,7 +8,6 @@ import { useState } from 'react'
 import { SignupSchema } from '@/lib/zodSchema'
 import toast from 'react-hot-toast'
 
-
 const INITIAL_FORM = {
   fullname: '',
   username: '',
@@ -43,14 +42,6 @@ const Signup = () => {
       setFormErrors(fielderr);
       //throw err;  //:>throw err to catch(error){}
       return; //:> break out try{} to do final{}
-
-
-      // let errArr: any[] = [];
-      // const { errors: err } = parseSignup.error;
-      // for (var i = 0; i < err.length; i++) {
-      //   errArr.push({ for: err[i].path[0], message: err[i].message });
-      // }
-      // setFormErrors(errArr);
     }
 
     // form is valid-----------------------
@@ -81,7 +72,7 @@ const Signup = () => {
       <form onSubmit={handleSubmit}>
         <div className='max-w-md bg-slate-100 p-5 mx-auto rounded-lg'>
           <div className='mb-5'>
-            <h1 className='text-2xl'>Signup</h1>
+            <h1 className='text-2xl'>ลงทะเบียนผู้ใช้ (SignUp)</h1>
           </div>
           <div className="mb-5">
             <Label>FullName</Label>
@@ -127,7 +118,7 @@ const Signup = () => {
               className='bg-white' />            <span className='text-xs text-red-500 italic'>{formError.find((e) => e.for == "password")?.message}</span>
           </div>
           <Button type='submit' className='w-full mb-5'>Create a new account</Button>
-          <p>Already have an account? <Link href="/login" className='text-primary'>login</Link></p>
+          <p>Already have an account? <Link href="/signin" className='text-primary'>Signin</Link></p>
         </div>
       </form>
     </>

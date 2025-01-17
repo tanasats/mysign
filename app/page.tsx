@@ -5,6 +5,8 @@ import { useUserContext } from "./context/UserContext";
 
 export default function Home() {
   const { userID, setUserID} = useUserContext();
+  
+  
   return (
     <main>
       <div className="container mx-auto">
@@ -16,7 +18,6 @@ export default function Home() {
           <Link href="/signup">Create an account</Link>
         </Button>
       </div>
-
     </main>
   );
 }
